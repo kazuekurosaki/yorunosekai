@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Artist List - Yorunosekai</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="archive" data-archive-type="artist">
+
+    <!-- Header Sama -->
+
+    <div class="detail-container">
+        <h2 id="archive-title">Artist List</h2>
+        
+        <!-- Filter Huruf -->
+        <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:20px;">
+            <script>
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(char => {
+                    document.write(`<a href="Artist.html?char=${char}" class="genre-tag" style="padding:10px">${char}</a>`);
+                });
+            </script>
+        </div>
+
+        <div id="post-grid" class="post-grid"></div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
