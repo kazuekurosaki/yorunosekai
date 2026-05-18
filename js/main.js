@@ -80,7 +80,7 @@ function renderDetail() {
         
         // Render Stars
         const starContainer = document.getElementById('val-stars');
-        starContainer.innerHTML = post.stars.map(s => `<a href="artist.html?name=${s}">${s}</a>`).join(', ');
+        starContainer.innerHTML = post.stars.map(s => `<a href="Artist.html?name=${s}">${s}</a>`).join(', ');
 
         // Render Genres
         const genreContainer = document.getElementById('val-genres');
