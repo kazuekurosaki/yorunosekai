@@ -1,0 +1,183 @@
+/* ==========================================================================
+   1. CSS VARIABLES (DARK/LIGHT MODE)
+   ========================================================================== */
+:root {
+    /* Dark Theme (Default) */
+    --bg-color: #0f0f0f;
+    --card-bg: #1e1e1e;
+    --text-color: #ffffff;
+    --text-muted: #aaaaaa;
+    --accent-color: #ff4757;
+    --header-bg: #000000;
+    --border-color: #333333;
+}
+
+[data-theme="light"] {
+    /* Light Theme */
+    --bg-color: #f4f4f4;
+    --card-bg: #ffffff;
+    --text-color: #1a1a1a;
+    --text-muted: #606060;
+    --accent-color: #ff4757;
+    --header-bg: #ffffff;
+    --border-color: #e5e5e5;
+}
+
+/* ==========================================================================
+   2. BASE STYLES
+   ========================================================================== */
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+    line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ==========================================================================
+   3. HEADER & NAVIGATION
+   ========================================================================== */
+header {
+    background-color: var(--header-bg);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-left { display: flex; align-items: center; gap: 15px; }
+.logo { font-weight: 800; font-size: 20px; color: var(--accent-color); letter-spacing: -1px; }
+
+.search-container { flex-grow: 1; margin: 0 15px; max-width: 500px; position: relative; }
+.search-container input {
+    width: 100%;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    outline: none;
+}
+
+.nav-right { display: flex; gap: 10px; align-items: center; }
+.btn-toggle {
+    background: none; border: none; color: var(--text-color);
+    font-size: 18px; cursor: pointer; padding: 5px;
+}
+
+/* Hamburger Menu Mobile */
+.menu-nav {
+    display: none; /* Hidden by default, toggled by JS */
+    position: absolute; top: 60px; left: 0; width: 100%;
+    background: var(--header-bg); border-bottom: 1px solid var(--border-color);
+    flex-direction: column; padding: 15px; gap: 15px;
+}
+.menu-nav.active { display: flex; }
+
+/* ==========================================================================
+   4. POST GRID & CARDS (HOMEPAGE)
+   ========================================================================== */
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Mobile: 2 kolom */
+    gap: 10px;
+    padding: 15px;
+}
+
+@media (min-width: 768px) {
+    .post-grid { grid-template-columns: repeat(4, 1fr); gap: 15px; }
+}
+@media (min-width: 1200px) {
+    .post-grid { grid-template-columns: repeat(6, 1fr); gap: 20px; }
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.thumb-container { position: relative; width: 100%; aspect-ratio: 2/3; overflow: hidden; }
+.thumb-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+
+/* Play Hover Effect */
+.play-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: 0.3s;
+}
+.play-overlay i { font-size: 40px; color: white; }
+.card:hover .play-overlay { opacity: 1; }
+.card:hover img { transform: scale(1.05); }
+
+.card-title {
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    height: 45px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ==========================================================================
+   5. SFW/NSFW MODE LOGIC
+   ========================================================================== */
+/* Jika SFW mode aktif (class ditambahkan ke body via JS) */
+body.sfw-mode .nsfw-item {
+    display: none !important;
+}
+
+/* ==========================================================================
+   6. DETAIL PAGE STYLES (SESUAI GAMBAR)
+   ========================================================================== */
+.detail-container { max-width: 1000px; margin: 0 auto; padding: 15px; }
+
+.video-wrapper {
+    background: #000;
+    width: 100%;
+    aspect-ratio: 16/9;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.post-header-title { font-size: 20px; font-weight: 700; margin: 10px 0; }
+
+.meta-info-table {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 15px; background: var(--card-bg); border-radius: 8px;
+}
+.meta-row { display: flex; border-bottom: 1px solid var(--border-color); padding: 5px 0; }
+.meta-label { width: 100px; color: var(--text-muted); font-size: 14px; flex-shrink: 0; }
+.meta-value { font-size: 14px; font-weight: 600; color: var(--accent-color); }
+
+.genre-tag {
+    background: var(--accent-color); color: white;
+    padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px;
+}
+
+/* ==========================================================================
+   7. FOOTER & PAGINATION
+   ========================================================================== */
+footer {
+    text-align: center; padding: 30px 15px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 50px; font-size: 12px; color: var(--text-muted);
+}
+
+.footer-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 10px; }
+
+/* Infinite scroll loader */
+#loader { text-align: center; padding: 20px; display: none; }
