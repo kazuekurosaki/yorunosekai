@@ -2,11 +2,47 @@
 <html lang="id">
 <head>
     <title>Genre List - Yorunosekai</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Yorunosekai - Platform Streaming Terlengkap dan Responsif.">
+    <meta name="keywords" content="streaming, video, yorunosekai, nonton online">
+    <meta name="author" content="Yorunosekai Admin">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Yorunosekai Streaming">
+    <meta property="og:description" content="Nonton streaming video terbaru dengan kualitas HD.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="archive" data-archive-type="genre">
 
     <!-- Header Sama -->
+    <header>
+    <div class="nav-left">
+        <div class="hamburger" id="menu-btn"><i class="fas fa-bars"></i></div>
+        <a href="index.html" class="logo">YORUNOSEKAI</a>
+    </div>
+    
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Cari kode atau judul...">
+    </div>
+
+    <div class="nav-right">
+        <button class="btn-toggle" onclick="toggleNSFW()" title="Toggle SFW/NSFW"><i class="fas fa-eye-slash"></i></button>
+        <button class="btn-toggle" onclick="toggleTheme()" title="Toggle Dark/Light"><i class="fas fa-moon"></i></button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="menu-nav" id="menu-nav">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="a-z-list.html"><i class="fas fa-sort-alpha-down"></i> A-Z List</a>
+        <a href="genre.html"><i class="fas fa-tags"></i> Genres</a>
+        <a href="Artist.html"><i class="fas fa-star"></i> Artists</a>
+        <a href="country.html"><i class="fas fa-globe"></i> Countries</a>
+    </nav>
+</header>
 
     <div class="detail-container">
         <h2 id="archive-title">Genre List</h2>
