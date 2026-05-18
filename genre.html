@@ -9,13 +9,13 @@
     <!-- Header Sama -->
 
     <div class="detail-container">
-        <h2 id="archive-title">A-Z Video List</h2>
+        <h2 id="archive-title">Genre List</h2>
         
         <!-- Filter Huruf -->
         <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:20px;">
             <script>
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(char => {
-                    document.write(`<a href="a-z-list.html?char=${char}" class="genre-tag" style="padding:10px">${char}</a>`);
+                    document.write(`<a href="genre.html?char=${char}" class="genre-tag" style="padding:10px">${char}</a>`);
                 });
             </script>
         </div>
