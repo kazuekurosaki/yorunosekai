@@ -1,54 +1,59 @@
 /**
  * YORUNOSEKAI CORE ENGINE
- * Berfungsi untuk mengelola data, theme, filter nsfw, dan navigasi.
+ * Mengatur data dinamis, Theme, NSFW Filter, dan Statistik Otomatis.
  */
 
-let allPosts = []; // Menyimpan semua data dari JSON
-let displayedCount = 12; // Jumlah post awal yang ditampilkan
-const increment = 6; // Jumlah post yang ditambah saat scroll (Infinite Scroll)
+let allPosts = [];
+let displayedCount = 12; // Jumlah item awal di Homepage
+const increment = 6;     // Tambahan item saat scroll
 
-// 1. INITIALIZATION
+// 1. INISIALISASI UTAMA
 document.addEventListener('DOMContentLoaded', () => {
     fetchData();
     initTheme();
     initNSFW();
-    setupEventListeners();
+    setupGlobalEvents();
 });
 
-// 2. FETCH DATA DARI JSON
+// 2. AMBIL DATA DARI JSON
 async function fetchData() {
     try {
         const response = await fetch('data/post.json');
         allPosts = await response.json();
         
-        // Tentukan halaman mana yang sedang aktif
-        const path = window.location.pathname;
-        const bodyPage = document.body.getAttribute('data-page');
+        const pageType = document.body.getAttribute('data-page');
 
-        if (bodyPage === 'home') {
+        if (pageType === 'home') {
             renderGrid(allPosts.slice(0, displayedCount));
-            initInfiniteScroll();
-        } else if (bodyPage === 'detail') {
-            renderDetail();
-        } else if (bodyPage === 'archive') {
-            renderArchive(); // Untuk Genre, Artist, Country, A-Z
+            setupInfiniteScroll();
+        } else if (pageType === 'detail') {
+            renderDetailPage();
+        } else if (pageType.includes('-list')) {
+            renderCategoryList(pageType); // Menghitung & Render Daftar Genre/Artis/Negara
+        } else if (pageType === 'archive') {
+            renderArchivePage(); // Menampilkan isi dari Genre/Artis yang diklik
+        } else if (pageType === 'az-list') {
+            renderAZPage();
         }
     } catch (error) {
-        console.error("Gagal mengambil data:", error);
+        console.error("Gagal memuat data JSON:", error);
     }
 }
 
-// 3. RENDER GRID VIDEO (HOME/ARCHIVE)
+// 3. RENDER GRID VIDEO (HOME & ARCHIVE)
 function renderGrid(posts) {
     const container = document.getElementById('post-grid');
     if (!container) return;
 
-    container.innerHTML = ''; // Clear container
+    // Filter SFW jika aktif
+    const isSFW = localStorage.getItem('sfw-mode') === 'true';
+    const filteredPosts = isSFW ? posts.filter(p => !p.is_nsfw) : posts;
 
-    posts.forEach(post => {
-        const isNSFW = post.is_nsfw ? 'nsfw-item' : '';
+    if (displayedCount === 12 || container.innerHTML === "") container.innerHTML = "";
+
+    filteredPosts.forEach(post => {
         const card = `
-            <div class="card ${isNSFW}" onclick="location.href='detail.html?id=${post.id}'">
+            <div class="card ${post.is_nsfw ? 'nsfw-item' : ''}" onclick="location.href='detail.html?id=${post.id}'">
                 <div class="thumb-container">
                     <img src="${post.image}" alt="${post.title}" loading="lazy">
                     <div class="play-overlay"><i class="fas fa-play"></i></div>
@@ -60,73 +65,99 @@ function renderGrid(posts) {
     });
 }
 
-// 4. LOGIKA HALAMAN DETAIL
-function renderDetail() {
+// 4. MENGHITUNG OTOMATIS & RENDER DAFTAR (GENRE, ARTIST, COUNTRY)
+function renderCategoryList(pageType) {
+    const container = document.getElementById('list-container');
+    if (!container) return;
+
+    let key = "";
+    let targetFile = "";
+    
+    if (pageType === 'genre-list') { key = "genres"; targetFile = "genre.html"; }
+    if (pageType === 'artist-list') { key = "stars"; targetFile = "Artist.html"; }
+    if (pageType === 'country-list') { key = "country"; targetFile = "country.html"; }
+
+    // Hitung kemunculan teks otomatis
+    let stats = {};
+    allPosts.forEach(post => {
+        const dataField = post[key];
+        if (Array.isArray(dataField)) {
+            dataField.forEach(item => stats[item] = (stats[item] || 0) + 1);
+        } else {
+            stats[dataField] = (stats[dataField] || 0) + 1;
+        }
+    });
+
+    // Render ke HTML
+    const sortedItems = Object.keys(stats).sort();
+    container.innerHTML = "";
+    sortedItems.forEach(name => {
+        container.innerHTML += `
+            <a href="${targetFile}?name=${encodeURIComponent(name)}" class="list-item">
+                <span class="item-name">${name}</span>
+                <span class="item-count">${stats[name]}</span>
+            </a>
+        `;
+    });
+}
+
+// 5. RENDER ISI KATEGORI (MISAL: SEMUA VIDEO DENGAN GENRE 'TEACHER')
+function renderArchivePage() {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('name');
+    const type = document.body.getAttribute('data-archive-type'); // Dari HTML
+
+    if (!query) return;
+    document.getElementById('archive-title').innerText = query;
+
+    let filtered = [];
+    if (type === 'genre') filtered = allPosts.filter(p => p.genres.includes(query));
+    if (type === 'artist') filtered = allPosts.filter(p => p.stars.includes(query));
+    if (type === 'country') filtered = allPosts.filter(p => p.country === query);
+
+    renderGrid(filtered);
+}
+
+// 6. RENDER HALAMAN DETAIL
+function renderDetailPage() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const post = allPosts.find(p => p.id === id);
 
     if (post) {
-        // Update Meta & Title (SEO Friendly)
-        document.title = `${post.title} - Yorunosekai`;
-        
-        // Render Konten
+        document.title = post.title;
         document.getElementById('video-player').src = post.video_url;
         document.getElementById('post-title').innerText = post.title;
-        document.getElementById('post-desc').innerText = post.description;
         document.getElementById('val-release').innerText = post.release_date;
-        document.getElementById('val-duration').innerText = post.duration;
         document.getElementById('val-country').innerText = post.country;
+        document.getElementById('val-duration').innerText = post.duration;
         
-        // Render Stars
-        const starContainer = document.getElementById('val-stars');
-        starContainer.innerHTML = post.stars.map(s => `<a href="Artist.html?name=${s}">${s}</a>`).join(', ');
-
-        // Render Genres
-        const genreContainer = document.getElementById('val-genres');
-        genreContainer.innerHTML = post.genres.map(g => `<span class="genre-tag" onclick="location.href='genre.html?name=${g}'">${g}</span>`).join('');
+        // Stars & Genres dengan link otomatis
+        document.getElementById('val-stars').innerHTML = post.stars.map(s => 
+            `<a href="Artist.html?name=${encodeURIComponent(s)}">${s}</a>`).join(', ');
+        
+        document.getElementById('val-genres').innerHTML = post.genres.map(g => 
+            `<span class="genre-tag" onclick="location.href='genre.html?name=${encodeURIComponent(g)}'">${g}</span>`).join('');
     }
 }
 
-// 5. LOGIKA ARCHIVE (A-Z, GENRE, ARTIST, COUNTRY)
-function renderArchive() {
-    const params = new URLSearchParams(window.location.search);
-    const type = document.body.getAttribute('data-archive-type'); // Misal: 'genre'
-    const query = params.get('name'); // Misal: 'Teacher'
-    const char = params.get('char'); // Untuk A-Z
-
-    let filtered = allPosts;
-
-    if (query) {
-        if (type === 'genre') filtered = allPosts.filter(p => p.genres.includes(query));
-        if (type === 'artist') filtered = allPosts.filter(p => p.stars.includes(query));
-        if (type === 'country') filtered = allPosts.filter(p => p.country === query);
-        document.getElementById('archive-title').innerText = `${type.toUpperCase()}: ${query}`;
-    } else if (char) {
-        filtered = allPosts.filter(p => p.title.toUpperCase().startsWith(char));
-        document.getElementById('archive-title').innerText = `LIST: ${char}`;
-    }
-
-    renderGrid(filtered);
-}
-
-// 6. INFINITE SCROLL (UNLIMITED PAGINATION)
-function initInfiniteScroll() {
+// 7. INFINITE SCROLL (UNLIMITED PAGINATION)
+function setupInfiniteScroll() {
     window.addEventListener('scroll', () => {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
             if (displayedCount < allPosts.length) {
-                const nextPosts = allPosts.slice(displayedCount, displayedCount + increment);
-                renderGrid([...allPosts.slice(0, displayedCount), ...nextPosts]);
+                const nextItems = allPosts.slice(displayedCount, displayedCount + increment);
+                renderGrid(nextItems);
                 displayedCount += increment;
             }
         }
     });
 }
 
-// 7. DARK/LIGHT MODE & NSFW TOGGLE
+// 8. THEME & NSFW TOGGLE
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
 }
 
 function toggleTheme() {
@@ -137,35 +168,47 @@ function toggleTheme() {
 }
 
 function initNSFW() {
-    const sfwStatus = localStorage.getItem('sfw-mode') === 'true';
-    if (sfwStatus) document.body.classList.add('sfw-mode');
+    const sfw = localStorage.getItem('sfw-mode') === 'true';
+    if (sfw) document.body.classList.add('sfw-mode');
 }
 
 function toggleNSFW() {
-    const isSFW = document.body.classList.toggle('sfw-mode');
-    localStorage.setItem('sfw-mode', isSFW);
-    alert(isSFW ? "SFW Mode Aktif (NSFW Disembunyikan)" : "NSFW Mode Aktif");
+    const current = document.body.classList.toggle('sfw-mode');
+    localStorage.setItem('sfw-mode', current);
+    location.reload(); // Reload untuk menyaring konten
 }
 
-// 8. SEARCH LOGIC
+// 9. SEARCH LOGIC
 function handleSearch(e) {
     const query = e.target.value.toLowerCase();
-    const filtered = allPosts.filter(p => p.title.toLowerCase().includes(query));
-    renderGrid(filtered);
+    const results = allPosts.filter(p => p.title.toLowerCase().includes(query));
+    const container = document.getElementById('post-grid');
+    if (container) {
+        container.innerHTML = "";
+        renderGrid(results);
+    }
 }
 
-// 9. EVENT LISTENERS
-function setupEventListeners() {
-    // Hamburger Menu
+// 10. GLOBAL EVENTS (HAMBURGER & SEARCH BTN)
+function setupGlobalEvents() {
     const menuBtn = document.getElementById('menu-btn');
     const menuNav = document.getElementById('menu-nav');
     if (menuBtn) {
         menuBtn.onclick = () => menuNav.classList.toggle('active');
     }
 
-    // Search Input
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
-        searchInput.oninput = handleSearch;
+        searchInput.addEventListener('input', handleSearch);
     }
+}
+
+// A-Z Logic
+function renderAZPage() {
+    const params = new URLSearchParams(window.location.search);
+    const char = params.get('char');
+    if (!char) return;
+    
+    const filtered = allPosts.filter(p => p.title.toUpperCase().startsWith(char));
+    renderGrid(filtered);
 }
