@@ -207,8 +207,21 @@ function setupGlobalEvents() {
 function renderAZPage() {
     const params = new URLSearchParams(window.location.search);
     const char = params.get('char');
-    if (!char) return;
-    
-    const filtered = allPosts.filter(p => p.title.toUpperCase().startsWith(char));
+    const container = document.getElementById('post-grid');
+    if (!container) return;
+
+    // 1. Urutkan semua postingan berdasarkan judul (A-Z) secara default
+    let filtered = allPosts.sort((a, b) => a.title.localeCompare(b.title));
+
+    // 2. Jika user klik huruf (misal ?char=F), saring datanya
+    if (char) {
+        filtered = filtered.filter(p => p.title.toUpperCase().startsWith(char.toUpperCase()));
+        document.getElementById('az-status').innerText = `Menampilkan Huruf: ${char}`;
+    } else {
+        document.getElementById('az-status').innerText = `Menampilkan Semua (A-Z)`;
+    }
+
+    // 3. Render ke Grid
+    container.innerHTML = ""; // Bersihkan container sebelum render
     renderGrid(filtered);
 }
