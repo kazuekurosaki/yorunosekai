@@ -2,9 +2,6 @@
 <html lang="id">
 <head>
     <!-- Masukkan isi meta.html & head.html di sini -->
-    <title>Yorunosekai - Streaming Portal</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Yorunosekai - Platform Streaming Terlengkap dan Responsif.">
@@ -13,45 +10,47 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Yorunosekai Streaming">
     <meta property="og:description" content="Nonton streaming video terbaru dengan kualitas HD.">
+    <title>Yorunosekai - Streaming Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-</head>
+    <link rel="stylesheet" href="css/style.css">
+    </head>
 <body data-page="home">
 
-    <!-- Masukkan Header di sini -->
     <header>
         <div class="nav-left">
             <div class="hamburger" id="menu-btn"><i class="fas fa-bars"></i></div>
             <a href="index.html" class="logo">YORUNOSEKAI</a>
         </div>
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="Cari...">
+            <input type="text" id="search-input" placeholder="Cari judul...">
         </div>
         <div class="nav-right">
-            <button class="btn-toggle" onclick="toggleNSFW()"><i class="fas fa-user-secret"></i></button>
-            <button class="btn-toggle" onclick="toggleTheme()"><i class="fas fa-adjust"></i></button>
+            <button class="btn-toggle" onclick="toggleNSFW()" title="SFW/NSFW"><i class="fas fa-eye-slash"></i></button>
+            <button class="btn-toggle" onclick="toggleTheme()" title="Theme"><i class="fas fa-moon"></i></button>
         </div>
+        <!-- Hamburger Menu -->
         <nav class="menu-nav" id="menu-nav">
             <a href="index.html">Home</a>
             <a href="a-z-list.html">A-Z List</a>
             <a href="genre.html">Genre</a>
             <a href="Artist.html">Artist</a>
+            <a href="country.html">Country</a>
         </nav>
     </header>
 
     <main>
         <div id="post-grid" class="post-grid">
-            <!-- Rendered by JS -->
+            <!-- Data dimuat otomatis oleh main.js -->
         </div>
         <div id="loader">Memuat video lainnya...</div>
     </main>
 
     <footer>
         <div class="footer-links">
-            <a href="#">Terms</a> <a href="#">DMCA</a> <a href="#">Contact</a>
+            <a href="#">Home</a> | <a href="#">Terms</a> | <a href="#">DMCA</a> | <a href="#">Contact Us</a>
         </div>
         <p>&copy; 2024 Yorunosekai. All Rights Reserved.</p>
     </footer>
