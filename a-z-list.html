@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>A-Z List - Yorunosekai</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="archive" data-archive-type="az">
-
-    <!-- Header Sama -->
+<body data-page="az-list">
+    
+    <!-- Header -->
 
     <div class="detail-container">
-        <h2 id="archive-title">A-Z Video List</h2>
-        
-        <!-- Filter Huruf -->
-        <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:20px;">
+        <h2>Daftar Video A-Z</h2>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; padding:10px;">
             <script>
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(char => {
-                    document.write(`<a href="a-z-list.html?char=${char}" class="genre-tag" style="padding:10px">${char}</a>`);
+                    document.write(`<a href="a-z-list.html?char=${char}" class="genre-tag" style="padding:10px 15px;">${char}</a>`);
                 });
             </script>
         </div>
