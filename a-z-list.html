@@ -1,39 +1,97 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <!-- SEO & Metadata -->
     <meta charset="UTF-8">
-    <title>A-Z List - Yorunosekai</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body data-page="az-list">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Daftar video streaming Yorunosekai berdasarkan urutan abjad A sampai Z.">
+    <meta name="robots" content="index, follow">
+    <title>A-Z List - Yorunosekai Streaming</title>
+
+    <!-- External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- CSS Internal/External -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-page="az-list">
+
+    <!-- HEADER SECTION -->
     <header>
         <div class="nav-left">
             <div class="hamburger" id="menu-btn"><i class="fas fa-bars"></i></div>
             <a href="index.html" class="logo">YORUNOSEKAI</a>
         </div>
+        
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Cari judul...">
+        </div>
+
+        <div class="nav-right">
+            <button class="btn-toggle" onclick="toggleNSFW()" title="Toggle SFW/NSFW"><i class="fas fa-eye-slash"></i></button>
+            <button class="btn-toggle" onclick="toggleTheme()" title="Toggle Dark/Light"><i class="fas fa-moon"></i></button>
+        </div>
+
+        <!-- Mobile Navigation Dropdown -->
         <nav class="menu-nav" id="menu-nav">
-            <a href="index.html">Home</a> <a href="genre.html">Genre</a>
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="a-z-list.html"><i class="fas fa-sort-alpha-down"></i> A-Z List</a>
+            <a href="genre.html"><i class="fas fa-tags"></i> Genres</a>
+            <a href="Artist.html"><i class="fas fa-star"></i> Artists</a>
+            <a href="country.html"><i class="fas fa-globe"></i> Countries</a>
         </nav>
     </header>
 
+    <!-- MAIN CONTENT SECTION -->
     <div class="detail-container">
-        <h2 id="archive-title" style="padding: 15px; font-size: 18px; color: var(--accent-color);">Daftar A-Z</h2>
+        <!-- Judul Dinamis: Akan berubah sesuai huruf yang dipilih -->
+        <h2 id="archive-title" style="padding: 15px 15px 0; font-size: 18px; color: var(--accent-color); margin-bottom: 5px;">
+            Memuat Daftar A-Z...
+        </h2>
         
-        <!-- Navigasi Huruf -->
-        <div style="display:flex; flex-wrap:wrap; gap:5px; padding: 0 15px 15px;">
+        <!-- Filter Bar Huruf A-Z -->
+        <div style="display:flex; flex-wrap:wrap; gap:6px; padding: 15px;">
             <script>
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(char => {
-                    document.write(`<a href="a-z-list.html?char=${char}" class="genre-tag" style="padding:10px 14px; font-weight:bold; background:var(--card-bg); border:1px solid var(--border-color);">${char}</a>`);
+                // Generate tombol abjad otomatis dari A sampai Z
+                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+                alphabet.forEach(char => {
+                    document.write(`
+                        <a href="a-z-list.html?char=${char}" 
+                           class="genre-tag" 
+                           style="padding:10px 14px; font-weight:800; background:var(--card-bg); border:1px solid var(--border-color); border-radius:4px; font-size:14px;">
+                           ${char}
+                        </a>
+                    `);
                 });
             </script>
-            <a href="a-z-list.html" class="genre-tag" style="padding:10px 14px; background:var(--accent-color); color:white;">ALL</a>
+            <!-- Tombol untuk menampilkan semua -->
+            <a href="a-z-list.html" class="genre-tag" style="padding:10px 14px; background:var(--accent-color); color:white; font-weight:800; border-radius:4px; font-size:14px;">
+                ALL
+            </a>
         </div>
 
-        <div id="post-grid" class="post-grid"></div>
+        <!-- Wadah Grid Postingan -->
+        <div id="post-grid" class="post-grid">
+            <!-- Video dimuat secara dinamis oleh js/main.js melalui fungsi renderAZPage() -->
+        </div>
     </div>
 
+    <!-- FOOTER SECTION -->
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a> | 
+            <a href="#">Terms</a> | 
+            <a href="#">DMCA</a> | 
+            <a href="#">Privacy Policy</a>
+        </div>
+        <p style="margin-top:10px;">&copy; 2024 Yorunosekai. Semua hak cipta dilindungi.</p>
+    </footer>
+
+    <!-- CORE JAVASCRIPT -->
     <script src="js/main.js"></script>
+
 </body>
 </html>
