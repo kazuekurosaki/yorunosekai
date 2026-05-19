@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Artist List - Yorunosekai</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - Yorunosekai</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body data-page="archive" data-archive-type="artist">
+<!-- 
+  PENTING:
+  - Di genre.html gunakan: data-page="genre-list" data-archive-type="genre"
+  - Di Artist.html gunakan: data-page="artist-list" data-archive-type="artist"
+  - Di country.html gunakan: data-page="country-list" data-archive-type="country"
+-->
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.has('name') ? 'archive' : 'artist-list'; // Ganti genre-list sesuai file
+    document.write(`<body data-page="${mode}" data-archive-type="artist">`); 
+</script>
 
-    <!-- Header Sama -->
+    <header>
+        <div class="nav-left">
+            <div class="hamburger" id="menu-btn"><i class="fas fa-bars"></i></div>
+            <a href="index.html" class="logo">YORUNOSEKAI</a>
+        </div>
+        <nav class="menu-nav" id="menu-nav">
+            <a href="index.html">Home</a> <a href="a-z-list.html">A-Z</a>
+        </nav>
+    </header>
 
     <div class="detail-container">
-        <h2 id="archive-title">Artist List</h2>
+        <h2 id="archive-title">Explore</h2>
         
-        <!-- Filter Huruf -->
-        <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:20px;">
-            <script>
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(char => {
-                    document.write(`<a href="Artist.html?char=${char}" class="genre-tag" style="padding:10px">${char}</a>`);
-                });
-            </script>
-        </div>
+        <!-- Wadah untuk Daftar (Genre/Artist/Country) dengan angka counter -->
+        <div id="list-container" class="list-wrapper"></div>
 
+        <!-- Wadah untuk Grid Video (muncul setelah salah satu list diklik) -->
         <div id="post-grid" class="post-grid"></div>
     </div>
 
