@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <!-- SEO & Metadata -->
+    <!-- Metadata SEO -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Daftar video streaming Yorunosekai berdasarkan urutan abjad A sampai Z.">
-    <meta name="robots" content="index, follow">
+    <meta name="description" content="Daftar video streaming Yorunosekai berdasarkan urutan abjad A-Z.">
+    <meta name="keywords" content="streaming, video, yorunosekai, nonton online, list a-z">
     <title>A-Z List - Yorunosekai Streaming</title>
 
-    <!-- External Resources -->
+    <!-- External Resources (Fonts & Icons) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- CSS Internal/External -->
+    <!-- CSS Utama -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
+<!-- Atribut data-page="az-list" memicu fungsi renderAZPage() di main.js -->
 <body data-page="az-list">
 
     <!-- HEADER SECTION -->
     <header>
         <div class="nav-left">
-            <div class="hamburger" id="menu-btn"><i class="fas fa-bars"></i></div>
+            <!-- Hamburger Menu Button -->
+            <div class="hamburger" id="menu-btn" title="Menu Navigasi">
+                <i class="fas fa-bars"></i>
+            </div>
             <a href="index.html" class="logo">YORUNOSEKAI</a>
         </div>
         
+        <!-- Search Input -->
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="Cari judul...">
+            <input type="text" id="search-input" placeholder="Cari judul video...">
         </div>
 
         <div class="nav-right">
-            <button class="btn-toggle" onclick="toggleNSFW()" title="Toggle SFW/NSFW"><i class="fas fa-eye-slash"></i></button>
-            <button class="btn-toggle" onclick="toggleTheme()" title="Toggle Dark/Light"><i class="fas fa-moon"></i></button>
+            <!-- Tombol SFW/NSFW Toggle -->
+            <button class="btn-toggle" onclick="toggleNSFW()" title="Mode SFW/NSFW">
+                <i class="fas fa-eye-slash"></i>
+            </button>
+            <!-- Tombol Dark/Light Mode -->
+            <button class="btn-toggle" onclick="toggleTheme()" title="Mode Gelap/Terang">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
 
-        <!-- Mobile Navigation Dropdown -->
+        <!-- Mobile Navigation Menu -->
         <nav class="menu-nav" id="menu-nav">
             <a href="index.html"><i class="fas fa-home"></i> Home</a>
             <a href="a-z-list.html"><i class="fas fa-sort-alpha-down"></i> A-Z List</a>
@@ -45,52 +57,54 @@
         </nav>
     </header>
 
-    <!-- MAIN CONTENT SECTION -->
-    <div class="detail-container">
-        <!-- Judul Dinamis: Akan berubah sesuai huruf yang dipilih -->
+    <!-- MAIN CONTENT -->
+    <main class="detail-container">
+        <!-- Judul Dinamis (Dikelola oleh JS) -->
         <h2 id="archive-title" style="padding: 15px 15px 0; font-size: 18px; color: var(--accent-color); margin-bottom: 5px;">
             Memuat Daftar A-Z...
         </h2>
         
-        <!-- Filter Bar Huruf A-Z -->
+        <!-- Alphabet Filter Bar -->
         <div style="display:flex; flex-wrap:wrap; gap:6px; padding: 15px;">
             <script>
-                // Generate tombol abjad otomatis dari A sampai Z
+                // Generate tombol abjad secara otomatis
                 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
                 alphabet.forEach(char => {
                     document.write(`
                         <a href="a-z-list.html?char=${char}" 
                            class="genre-tag" 
-                           style="padding:10px 14px; font-weight:800; background:var(--card-bg); border:1px solid var(--border-color); border-radius:4px; font-size:14px;">
+                           style="padding:10px 14px; font-weight:800; background:var(--card-bg); border:1px solid var(--border-color); border-radius:4px; font-size:14px; display:inline-block; transition: 0.2s;">
                            ${char}
                         </a>
                     `);
                 });
             </script>
-            <!-- Tombol untuk menampilkan semua -->
-            <a href="a-z-list.html" class="genre-tag" style="padding:10px 14px; background:var(--accent-color); color:white; font-weight:800; border-radius:4px; font-size:14px;">
+            <!-- Tombol Reset/Semua -->
+            <a href="a-z-list.html" class="genre-tag" style="padding:10px 14px; background:var(--accent-color); color:white; font-weight:800; border-radius:4px; font-size:14px; display:inline-block;">
                 ALL
             </a>
         </div>
 
-        <!-- Wadah Grid Postingan -->
+        <!-- Grid Container Video -->
+        <!-- Logic: JavaScript akan mengisi postingan ke dalam div #post-grid ini -->
         <div id="post-grid" class="post-grid">
-            <!-- Video dimuat secara dinamis oleh js/main.js melalui fungsi renderAZPage() -->
+            <!-- Konten dimuat oleh main.js -->
         </div>
-    </div>
+    </main>
 
     <!-- FOOTER SECTION -->
     <footer>
         <div class="footer-links">
             <a href="index.html">Home</a> | 
-            <a href="#">Terms</a> | 
+            <a href="#">Terms of Service</a> | 
             <a href="#">DMCA</a> | 
-            <a href="#">Privacy Policy</a>
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Contact Us</a>
         </div>
-        <p style="margin-top:10px;">&copy; 2024 Yorunosekai. Semua hak cipta dilindungi.</p>
+        <p style="margin-top:15px; opacity: 0.7;">&copy; 2024 Yorunosekai Streaming. All Rights Reserved.</p>
     </footer>
 
-    <!-- CORE JAVASCRIPT -->
+    <!-- Core Script (Pastikan main.js sudah diperbarui dengan versi terakhir) -->
     <script src="js/main.js"></script>
 
 </body>
