@@ -29,11 +29,11 @@ async function fetchData() {
         } else if (pageType === 'detail') {
             renderDetailPage();
         } else if (pageType.includes('-list')) {
-            renderCategoryList(pageType); // Menghitung & Render Daftar Genre/Artis/Negara
+            renderCategoryList(pageType);
         } else if (pageType === 'archive') {
-            renderArchivePage(); // Menampilkan isi dari Genre/Artis yang diklik
+            renderArchivePage();
         } else if (pageType === 'az-list') {
-            renderAZPage();
+            renderAZPage(); // <--- Fungsi ini yang kita perbaiki
         }
     } catch (error) {
         console.error("Gagal memuat data JSON:", error);
