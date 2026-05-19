@@ -2,52 +2,37 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A-Z List - Yorunosekai</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body data-page="az-list">
-
+    
     <header>
         <div class="nav-left">
             <div class="hamburger" id="menu-btn"><i class="fas fa-bars"></i></div>
             <a href="index.html" class="logo">YORUNOSEKAI</a>
         </div>
-        <div class="nav-right">
-            <button class="btn-toggle" onclick="toggleTheme()"><i class="fas fa-adjust"></i></button>
-        </div>
         <nav class="menu-nav" id="menu-nav">
-            <a href="index.html">Home</a>
-            <a href="genre.html">Genre</a>
-            <a href="Artist.html">Artist</a>
-            <a href="country.html">Country</a>
+            <a href="index.html">Home</a> <a href="genre.html">Genre</a>
         </nav>
     </header>
 
     <div class="detail-container">
-        <h2 id="az-status" style="margin-bottom:10px; font-size:18px; color:var(--accent-color);">Memuat Daftar A-Z...</h2>
+        <h2 id="archive-title" style="padding: 15px; font-size: 18px; color: var(--accent-color);">Daftar A-Z</h2>
         
-        <!-- Filter Huruf -->
-        <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:20px; background:var(--card-bg); padding:10px; border-radius:8px;">
+        <!-- Navigasi Huruf -->
+        <div style="display:flex; flex-wrap:wrap; gap:5px; padding: 0 15px 15px;">
             <script>
-                // Generate tombol A-Z secara otomatis
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(char => {
-                    document.write(`<a href="a-z-list.html?char=${char}" class="genre-tag" style="padding:8px 12px; font-weight:bold;">${char}</a>`);
+                    document.write(`<a href="a-z-list.html?char=${char}" class="genre-tag" style="padding:10px 14px; font-weight:bold; background:var(--card-bg); border:1px solid var(--border-color);">${char}</a>`);
                 });
             </script>
-            <a href="a-z-list.html" class="genre-tag" style="padding:8px 12px; background:#444;">ALL</a>
+            <a href="a-z-list.html" class="genre-tag" style="padding:10px 14px; background:var(--accent-color); color:white;">ALL</a>
         </div>
 
-        <!-- Grid Postingan -->
-        <div id="post-grid" class="post-grid">
-            <!-- Video akan muncul di sini secara otomatis -->
-        </div>
+        <div id="post-grid" class="post-grid"></div>
     </div>
-
-    <footer>
-        <p>&copy; 2026 Yorunosekai.</p>
-    </footer>
 
     <script src="js/main.js"></script>
 </body>
